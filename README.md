@@ -2,13 +2,13 @@
 
 A Machine Learning project that predicts sleep disorders and health outcomes based on lifestyle and physiological data. Built with Python, scikit-learn, and deployed as a Flask web application.
 
----
+----
 
 ## 📌 Problem Statement
 
 Sleep disorders affect millions of people and are often undiagnosed. This project uses machine learning to predict the likelihood of sleep disorders based on features such as physical activity, stress levels, BMI, heart rate, and daily steps — enabling early awareness and intervention.
 
----
+----
 
 ## 🔍 Project Phases
 
