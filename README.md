@@ -1,96 +1,65 @@
-# 🌙 Sleep Oracle: Anticipating Health & Lifestyle through Data
+# 🌙 Sleep Oracle
 
-A Machine Learning project that predicts sleep disorders and health outcomes based on lifestyle and physiological data. Built with Python, scikit-learn, and deployed as a Flask web application.
+A modern full-stack application that predicts sleep disorders using machine learning. Built with React, Flask, and scikit-learn.
 
-----
+## ✨ Features
 
-## 📌 Problem Statement
+- **AI-Powered Predictions**: Random Forest classifier trained on sleep health data
+- **Beautiful UI**: Modern sleep-themed design with animations
+- **Real-time Analysis**: Instant predictions with health recommendations
+- **Responsive**: Works perfectly on mobile and desktop
 
-Sleep disorders affect millions of people and are often undiagnosed. This project uses machine learning to predict the likelihood of sleep disorders based on features such as physical activity, stress levels, BMI, heart rate, and daily steps — enabling early awareness and intervention.
+## 🚀 Quick Start
 
-----
-
-## 🔍 Project Phases
-
-| Phase | Description |
-|-------|-------------|
-| **Ideation** | Brainstorming, idea prioritization, and empathy mapping |
-| **Planning** | Project planning, timeline, and technology stack selection |
-| **Design** | Solution architecture, data flow diagrams, user stories |
-| **Development** | Data preprocessing, model training, Flask web app |
-| **Testing & Submission** | Performance testing, final project report |
-
----
-
-## 🧠 ML Model
-
-- **Dataset:** Sleep Health and Lifestyle Dataset (374 records, 13 features)
-- **Algorithm:** Random Forest Classifier
-- **Features used:** Age, Gender, Occupation, Sleep Duration, Sleep Quality, Physical Activity Level, Stress Level, BMI Category, Heart Rate, Daily Steps, Blood Pressure
-- **Target:** Sleep Disorder (None / Sleep Apnea / Insomnia)
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Language | Python 3.x |
-| ML Libraries | scikit-learn, pandas, numpy, matplotlib, seaborn |
-| Web Framework | Flask |
-| Frontend | HTML, CSS, Bootstrap |
-| Model Serialization | pickle |
-| Notebook | Jupyter Notebook |
-
----
-
-## 📂 Repository Structure
-
-```
-sleep-oracle/
-├── dataset/          # Raw CSV dataset
-├── notebooks/        # Jupyter notebooks (EDA + Model training + Flask prep)
-├── app/              # Flask web application
-│   └── templates/    # HTML frontend
-├── docs/             # Phase-wise project documentation (PDFs)
-│   ├── ideation/
-│   ├── planning/
-│   ├── design/
-│   ├── development/
-│   └── final/
-└── assets/           # Static assets
-```
-
----
-
-## 🚀 How to Run Locally
+### Local Development
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/YOUR_USERNAME/sleep-oracle.git
-cd sleep-oracle
-
-# 2. Install dependencies
+# Backend
 pip install -r requirements.txt
+cd app && python app.py
 
-# 3. Run the Flask app
-cd app
-python app.py
-
-# 4. Open in browser
-# Visit: http://127.0.0.1:5000
+# Frontend
+cd frontend && npm install && npm run dev
 ```
 
----
+### Deploy to Render
 
-## 📊 Results
+Use the workflow: `/deploy-to-render`
 
-- Model trained and evaluated with cross-validation
-- Performance metrics documented in `docs/final/Performance-Testing-ML.pdf`
-- Full project report available in `docs/final/Project-Report.pdf`
+Or manually:
+1. Push to GitHub
+2. Deploy backend on Render (root: `.`, build: `pip install -r requirements.txt`, start: `gunicorn app.app:app`)
+3. Update frontend API URL in `frontend/src/App.jsx`
+4. Deploy frontend on Render (root: `frontend`, build: `npm install && npm run build`, start: `npm run preview`)
 
----
+## � Structure
+
+```
+Sleep-Oracle/
+├── app/                    # Flask backend
+│   ├── app.py
+│   ├── model.pkl
+│   └── encoders.pkl
+├── frontend/               # React frontend
+│   ├── src/
+│   ├── package.json
+│   └── render.yaml
+├── dataset/                # Training data
+├── requirements.txt
+└── render.yaml
+```
+
+## 🧠 Model
+
+- **Algorithm**: Random Forest Classifier
+- **Features**: Age, Gender, Occupation, Sleep Duration, Quality, Physical Activity, Stress, BMI, Blood Pressure, Heart Rate, Daily Steps
+- **Predictions**: No Disorder, Insomnia, Sleep Apnea
+
+## � API
+
+- `POST /predict` - Predict sleep disorder
+- `GET /health` - Health check
 
 ## 📄 License
 
-This project was developed as part of a guided project program.
+MIT License
