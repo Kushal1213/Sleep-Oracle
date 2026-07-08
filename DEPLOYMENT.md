@@ -1,35 +1,36 @@
 # 🚀 Sleep Oracle - Deployment Guide
 
-This guide will help you deploy the Sleep Oracle application to production using **Render** (recommended for free tier) or **Vercel**.
+This guide will help you deploy the Sleep Oracle application to production using **Render** (recommended for free tier).
 
 ---
 
 ## 📋 Prerequisites
 
 - GitHub account with the project pushed to a repository
-- Render account (free) or Vercel account (free)
+- Render account (free)
 - Basic understanding of git commands
 
 ---
 
-## 🎯 Option 1: Deploy to Render (Recommended - Free Tier)
+## 🎯 Deploy to Render (Recommended - Free Tier)
 
-Render offers a generous free tier perfect for this application.
+Render offers a generous free tier perfect for this full-stack application.
 
-### Step 1: Deploy Backend
+### Step 1: Push Code to GitHub
 
-1. **Push your code to GitHub**
-   ```bash
-   git add .
-   git commit -m "Ready for deployment"
-   git push origin main
-   ```
+```bash
+git add .
+git commit -m "Ready for deployment"
+git push origin main
+```
 
-2. **Create a Render account**
+### Step 2: Deploy Backend
+
+1. **Create a Render account**
    - Go to [render.com](https://render.com)
    - Sign up with GitHub
 
-3. **Deploy the Flask Backend**
+2. **Deploy the Flask Backend**
    - Click "New +" → "Web Service"
    - Connect your GitHub repository
    - Configure the service:
@@ -42,14 +43,22 @@ Render offers a generous free tier perfect for this application.
    - Wait for deployment (2-3 minutes)
    - Copy the backend URL (e.g., `https://sleep-oracle-backend.onrender.com`)
 
-4. **Update Frontend API URL**
-   - Edit `frontend/src/App.jsx`
+### Step 3: Update Frontend API URL
+
+1. **Edit `frontend/src/App.jsx`**
    - Replace the axios.post URL with your backend URL:
    ```javascript
-   const response = await axios.post('https://sleep-oracle-backend.onrender.com/api/predict', {
+   const response = await axios.post('https://sleep-oracle-backend.onrender.com/predict', {
    ```
 
-### Step 2: Deploy Frontend
+2. **Commit and push the change**
+   ```bash
+   git add frontend/src/App.jsx
+   git commit -m "Update API URL for production"
+   git push origin main
+   ```
+
+### Step 4: Deploy Frontend
 
 1. **Deploy the React Frontend**
    - In Render, click "New +" → "Web Service"
@@ -63,46 +72,10 @@ Render offers a generous free tier perfect for this application.
    - Click "Create Web Service"
    - Wait for deployment (2-3 minutes)
 
-2. **Access your application**
-   - Open the frontend URL provided by Render
-   - Your Sleep Oracle is now live! 🎉
+### Step 5: Access Your Application
 
----
-
-## 🎯 Option 2: Deploy to Vercel (Alternative Free Tier)
-
-### Step 1: Deploy Backend to Vercel
-
-1. **Install Vercel CLI**
-   ```bash
-   npm install -g vercel
-   ```
-
-2. **Deploy backend**
-   ```bash
-   cd /path/to/Sleep-Oracle-master
-   vercel
-   ```
-   - Follow the prompts
-   - Select Python as the framework
-   - Set build command: `pip install -r requirements.txt`
-   - Set start command: `gunicorn app.app:app`
-   - Copy the deployed URL
-
-### Step 2: Deploy Frontend to Vercel
-
-1. **Update API URL in frontend**
-   - Edit `frontend/src/App.jsx`
-   - Replace with your Vercel backend URL
-
-2. **Deploy frontend**
-   ```bash
-   cd frontend
-   vercel
-   ```
-   - Follow the prompts
-   - Select React/Vite as the framework
-   - Your app will be live instantly!
+- Open the frontend URL provided by Render
+- Your Sleep Oracle is now live! 🎉
 
 ---
 
@@ -145,8 +118,8 @@ Sleep-Oracle-master/
 ├── app/
 │   ├── app.py              # Flask backend API
 │   ├── model.pkl           # Trained ML model
-│   └── templates/          # Old HTML templates (deprecated)
-├── frontend/               # New React frontend
+│   └── encoders.pkl       # Label encoders
+├── frontend/               # React frontend
 │   ├── src/
 │   │   ├── App.jsx         # Main React component
 │   │   ├── components/
@@ -160,17 +133,16 @@ Sleep-Oracle-master/
 ├── dataset/                # Training data
 ├── requirements.txt        # Python dependencies
 ├── render.yaml            # Backend Render config
-└── vercel.json            # Vercel config
+└── DEPLOYMENT.md          # This file
 ```
 
 ---
 
 ## 🔑 Environment Variables
 
-The application uses the following environment variables (configure in Render/Vercel dashboard):
+The application uses the following environment variables (configure in Render dashboard):
 
 - `PORT`: Backend port (default: 5000)
-- `VITE_API_URL`: Frontend API URL (for production)
 
 ---
 
@@ -178,9 +150,9 @@ The application uses the following environment variables (configure in Render/Ve
 
 ### Backend Issues
 
-- **Model not loading**: Ensure `model.pkl` is in the `app/` directory
-- **CORS errors**: Backend has CORS enabled, but verify the frontend URL
-- **Port conflicts**: Render automatically assigns ports locally
+- **Model not loading**: Ensure `model.pkl` and `encoders.pkl` are in the `app/` directory
+- **CORS errors**: Backend has CORS enabled
+- **Port conflicts**: Render automatically assigns ports
 
 ### Frontend Issues
 
@@ -190,8 +162,8 @@ The application uses the following environment variables (configure in Render/Ve
 
 ### Deployment Issues
 
-- **Build timeout**: Free tier has build time limits, optimize if needed
-- **Memory errors**: The model is ~228KB, well within free tier limits
+- **Build timeout**: Free tier has build time limits
+- **Memory errors**: The model is small (~228KB), well within free tier limits
 - **Cold starts**: Free tier services may have cold starts (30-60s)
 
 ---
@@ -199,14 +171,13 @@ The application uses the following environment variables (configure in Render/Ve
 ## 📈 Monitoring
 
 - **Render Dashboard**: Monitor logs, CPU, and memory usage
-- **Vercel Dashboard**: View deployment logs and analytics
 - **Health Check**: Backend has a `/health` endpoint for monitoring
 
 ---
 
 ## 🔒 Security Notes
 
-- The model file (`model.pkl`) should be committed to the repository
+- The model file (`model.pkl`) is committed to the repository
 - No sensitive data is stored
 - API accepts JSON POST requests
 - Consider adding rate limiting for production use
@@ -225,7 +196,7 @@ The application uses the following environment variables (configure in Render/Ve
 
 ## 📝 API Endpoints
 
-### POST /api/predict
+### POST /predict
 Predicts sleep disorder based on input features.
 
 **Request Body:**
@@ -248,7 +219,12 @@ Predicts sleep disorder based on input features.
 **Response:**
 ```json
 {
-  "prediction": "None",
+  "prediction": "No Disorder",
+  "probabilities": {
+    "Insomnia": 0.03,
+    "No Disorder": 0.95,
+    "Sleep Apnea": 0.02
+  },
   "status": "success"
 }
 ```
@@ -270,7 +246,7 @@ Health check endpoint.
 
 For issues or questions:
 - Check the troubleshooting section above
-- Review Render/Vercel documentation
+- Review Render documentation
 - Check the logs in your deployment dashboard
 
 ---
