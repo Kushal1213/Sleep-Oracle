@@ -36,7 +36,7 @@ function App() {
 
     try {
       console.log('Form data being sent:', formData)
-      const response = await axios.post('http://localhost:5000/predict', {
+      const response = await axios.post('https://sleep-oracle-backend.onrender.com/predict', {
         gender: parseFloat(formData.gender),
         age: parseFloat(formData.age),
         occupation: parseFloat(formData.occupation),
